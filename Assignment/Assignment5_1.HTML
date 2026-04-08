@@ -64,6 +64,9 @@
             rows.sort((a, b) => 
             {
                 const nameA = a.cells[0].innerText
+                console.log(a)
+                console.log(a.cells)
+                console.log(a.cells[0])
                 const nameB = b.cells[0].innerText
 
                 if (nameA < nameB) return -1
