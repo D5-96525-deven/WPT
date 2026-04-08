@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Books</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+<h2>Book Records</h2>
+
+<button onclick="loadXHR()">XHR</button>
+<button onclick="loadFetchThen()">Fetch Then</button>
+<button onclick="loadAsync()">Async/Await</button>
+<button onclick="loadAxios()">Axios</button>
+
+<ul id="list"></ul>
+
+<script>
+
+const URL = "http://localhost:4001/books";
+
+function render(data) {
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  data.forEach(b => {
+    list.innerHTML += `<li>${b.title} - ${b.author}</li>`;
+  });
+}
+
+function loadXHR() {
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", URL);
+
+  xhr.onload = function () {
+    const data = JSON.parse(xhr.responseText);
+    render(data);
+  };
+
+  xhr.onerror = function () {
+    console.log("XHR error");
+  };
+
+  xhr.send();
+}
+
+function loadFetchThen() {
+  fetch(URL)
+    .then(res => res.json())
+    .then(data => render(data))
+    .catch(err => console.log(err));
+}
+
+async function loadAsync() {
+  try {
+    const res = await fetch(URL);
+    const data = await res.json();
+    render(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function loadAxios() {
+  axios.get(URL)
+    .then(res => render(res.data))
+    .catch(err => console.log(err));
+}
+
+</script>
+
+</body>
+</html>
